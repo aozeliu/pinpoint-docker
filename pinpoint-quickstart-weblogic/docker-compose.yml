@@ -6,15 +6,16 @@ services:
       context: .
       dockerfile: Dockerfile
 
-    container_name: "pinpoint-quickstart"
-    image: "pinpointdocker/pinpoint-quickstart"
+    container_name: "pinpoint-quickstart-weblogic"
+    image: "pinpointdocker/pinpoint-quickstart-weblogic"
+    user: "root"
     ports:
-      - "${APP_PORT:-8080}:8080"
+      - "${APP_PORT:-8000}:8000"
       - "5005:5005"
     volumes:
       - data-volume:/pinpoint-agent
     environment:
-      JAVA_OPTS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -javaagent:/pinpoint-agent/pinpoint-bootstrap-${PINPOINT_VERSION}.jar -Dpinpoint.agentId=${AGENT_ID} -Dpinpoint.applicationName=${APP_NAME} -Dwebrts.application.type=tomcat -Dwebrts.application.base.dir=/usr/local/tomcat/webapps/"
+      JAVA_OPTIONS: "-Xdebug -Xnoagent -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -javaagent:/pinpoint-agent/pinpoint-bootstrap-${PINPOINT_VERSION}.jar -Dpinpoint.agentId=${AGENT_ID} -Dpinpoint.applicationName=${APP_NAME} -Dwebrts.application.type=weblogic -Dwebrts.application.base.dir=/u01/oracle/weblogic/user_projects/domains/base_domain/servers/AdminServer/tmp/_WL_user/"
     depends_on:
       - pinpoint-agent
 

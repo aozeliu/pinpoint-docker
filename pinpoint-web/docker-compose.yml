@@ -16,9 +16,11 @@ services:
       - "8080"
       - "9997"
     ports:
+      - "5006:5006"
       - "9997:9997"
       - "${WEB_PAGE_PORT:-8080}:8080"
     environment:
+      - JAVA_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5006"
       - CLUSTER_ENABLE=${CLUSTER_ENABLE}
       - CLUSTER_ZOOKEEPER_ADDRESS=${CLUSTER_ZOOKEEPER_ADDRESS}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD}
@@ -46,3 +48,7 @@ services:
       - MAIL_PROPERTIES_MAIL_STARTTLS_REQUIRED=${MAIL_PROPERTIES_MAIL_STARTTLS_REQUIRED}
       - MAIL_PROPERTIES_MAIL_DEBUG=${MAIL_PROPERTIES_MAIL_DEBUG}
 
+networks:
+  default:
+    external:
+      name: webrts

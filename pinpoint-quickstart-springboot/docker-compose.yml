@@ -6,15 +6,15 @@ services:
       context: .
       dockerfile: Dockerfile
 
-    container_name: "pinpoint-quickstart"
-    image: "pinpointdocker/pinpoint-quickstart"
+    container_name: "pinpoint-quickstart-springboot"
+    image: "pinpointdocker/pinpoint-quickstart-springboot"
     ports:
       - "${APP_PORT:-8080}:8080"
       - "5005:5005"
     volumes:
       - data-volume:/pinpoint-agent
     environment:
-      JAVA_OPTS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -javaagent:/pinpoint-agent/pinpoint-bootstrap-${PINPOINT_VERSION}.jar -Dpinpoint.agentId=${AGENT_ID} -Dpinpoint.applicationName=${APP_NAME} -Dwebrts.application.type=tomcat -Dwebrts.application.base.dir=/usr/local/tomcat/webapps/"
+      JAVA_OPTS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005 -javaagent:/pinpoint-agent/pinpoint-bootstrap-${PINPOINT_VERSION}.jar -Dpinpoint.agentId=${AGENT_ID} -Dpinpoint.applicationName=${APP_NAME} -Dwebrts.application.type=springboot -Dwebrts.application.base.dir= "
     depends_on:
       - pinpoint-agent
 

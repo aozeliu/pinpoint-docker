@@ -12,7 +12,7 @@ services:
     container_name: "${PINPOINT_AGENT_NAME}"
     image: "pinpointdocker/pinpoint-agent:${PINPOINT_VERSION}"
 
-    restart: unless-stopped
+    #restart: unless-stopped
 
     volumes:
       - pinpoint-agent
@@ -23,8 +23,6 @@ services:
       - COLLECTOR_SPAN_PORT=${COLLECTOR_SPAN_PORT}
       - PROFILER_SAMPLING_RATE=${PROFILER_SAMPLING_RATE}
       - DEBUG_LEVEL=${AGENT_DEBUG_LEVEL}
-    networks:
-      - pinpoint
 
 #networks:
 #  default:
@@ -32,6 +30,7 @@ services:
 #      name: pinpoint
 
 networks:
-  pinpoint:
-    driver: bridge
+  default:
+    external:
+      name: webrts
 

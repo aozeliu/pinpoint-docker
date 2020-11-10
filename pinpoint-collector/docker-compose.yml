@@ -8,6 +8,7 @@ services:
       args:
         - PINPOINT_VERSION=${PINPOINT_VERSION}
 
+    hostname: "${PINPOINT_COLLECTOR_NAME}"
     container_name: "${PINPOINT_COLLECTOR_NAME}"
     image: "pinpointdocker/pinpoint-collector:${PINPOINT_VERSION}"
 
@@ -22,8 +23,11 @@ services:
       - "${COLLECTOR_RECEIVER_SPAN_UDP_PORT:-9996}:9996/tcp"
       - "${COLLECTOR_RECEIVER_STAT_UDP_PORT:-9995}:9995/udp"
       - "${COLLECTOR_RECEIVER_SPAN_UDP_PORT:-9996}:9996/udp"
+      - "8081:9080"
+      - "5007:5007"
 
     environment:
+      - JAVA_OPTS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5007"
       - CLUSTER_ENABLE=${CLUSTER_ENABLE}
       - CLUSTER_ZOOKEEPER_ADDRESS=${CLUSTER_ZOOKEEPER_ADDRESS}
       - HBASE_HOST=${HBASE_HOST}
@@ -33,5 +37,6 @@ services:
       - DEBUG_LEVEL=${COLLECTOR_DEBUG_LEVEL}
 
 networks:
-  pinpoint:
-    driver: bridge
+  default:
+    external:
+      name: webrts
